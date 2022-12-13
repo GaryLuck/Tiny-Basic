@@ -1,6 +1,6 @@
 'Ed Davis. Tiny Basic that can play Star Trek
-$console:only
-option _explicit
+' $console:only
+' option _explicit
 
 const true = -1, false = 0, c_maxlines = 7000, c_maxvars = 26, c_at_max = 500, c_g_stack = 100
 dim shared as string c_tab, c_squote, c_dquote
