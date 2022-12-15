@@ -574,6 +574,7 @@ void nexttok(void) {
         getch();
         errors = true;
     }
+           // printf("(%d, %d) What? %c (%d) %s\n", curline, textp, tok[0], tok[0], thelin);
 }
 
 void skiptoeol(void) {
