@@ -33,7 +33,7 @@ function myucase(s as string) as string
     flag = true
     collect = ""
     for i = 1 to len(s)
-        c(i) = mid$(s, i, 1)
+        c(i) = mid(s, i, 1)
 '        Console.WriteLine("character and code = " + c(i) + "  code = ", asc(c(i)))
         if asc(c(i)) = 34 then ' toggle flag
 '            Console.writeline("Toggling flag at "+i)
@@ -45,7 +45,7 @@ function myucase(s as string) as string
             end if
         end if
         if flag = true then
-            c(i) = Ucase$(c(i))
+            c(i) = Ucase(c(i))
         end if
 '       Console.WriteLine("character and code = " + c(i) + "  code = ", asc(c(i)))
     next i
@@ -63,17 +63,14 @@ Sub Main()
   dim k as integer
 
   for k = 1 to 5000
-    at_array(k) = 2*k  ' test pattern
+        at_array(k) = 2*k  ' test pattern
   next i
 
   for k = 1 to 5000
-    statement(k) = ""
+        statement(k) = ""
   next k
-op = new string(ops + 1) { "dummy for 0" , "+", "-", "*", "/", "(", ")", "=", "^", "@", "," }
-    ' console.writeline("ops are:")
- '   for k = 1 to ops
-  '  console.writeline(op(k))
-   ' next k
+
+  op = new string(ops + 1) { "dummy for 0" , "+", "-", "*", "/", "(", ")", "=", "^", "@", "," }
 
   dim i as string
 
@@ -91,14 +88,12 @@ op = new string(ops + 1) { "dummy for 0" , "+", "-", "*", "/", "(", ")", "=", "^
       i = Console.readline()
       i = rid_eol(i)
       i = myucase(i)
-'      i = Ucase$(i)
-'      Console.WriteLine(i)
       
       buff = i
       
       tok = gettok()
 
-      if left$(tok, 1) >= "0" and left$(tok, 1) <= "9" then
+      if left(tok, 1) >= "0" and left(tok, 1) <= "9" then
   
          process_line(i)
 
@@ -111,7 +106,7 @@ op = new string(ops + 1) { "dummy for 0" , "+", "-", "*", "/", "(", ")", "=", "^
           
       end if
       
-  end while
+   end while
  
    Release_variable_store()
 
@@ -119,13 +114,10 @@ op = new string(ops + 1) { "dummy for 0" , "+", "-", "*", "/", "(", ")", "=", "^
 end sub
 
 sub edit_delete(linenum as integer)
-'  Console.WriteLine("deleting " + linenum)
   statement(linenum) = ""
 end sub
 
 sub edit_replace(linenum as integer, buff as string)
-'    Console.WriteLine("linenum = "+linenum)
-'    Console.WriteLine( "     buff = "+buff)
     statement(linenum) = buff
 end sub
 
@@ -146,53 +138,45 @@ end sub
 
 function do_command(cmd as string) as integer
 
-   if cmd = "LIST" then
+    if cmd = "LIST" then
    
       do_list()
     
-  elseif left$(cmd, 5) = "PRINT" then
+    elseif left(cmd, 5) = "PRINT" then
 
-    do_print(cmd)
-  
-     'Console.WriteLine(Val(Expr_eval(mid$(cmd, 6))))
-    ' buff = buff_after_parse_or ' look for extraneous stuff
-    ' if gettok() <> "~" then
-    '     Console.WriteLine("warning: extra stuff after expression")
-    '  end if
+      do_print(cmd)
 
-  elseif left$(cmd, 3) = "LET" then
+    elseif left(cmd, 3) = "LET" then
   
-      do_let(cmd)
-     buff = buff_after_parse_or ' look for extraneous stuff
-     if gettok() <> "~" then
-         Console.WriteLine("warning: extra stuff after expression")
-      end if
+       do_let(cmd)
+       buff = buff_after_parse_or ' look for extraneous stuff
+       if gettok() <> "~" then
+           Console.WriteLine("warning: extra stuff after expression")
+       end if
        
-      
-      
-  elseif cmd = "NEW"then
+    elseif cmd = "NEW"then
     
        do_new()
        
-  elseif left$(cmd, 4) = "LOAD" then
+    elseif left(cmd, 4) = "LOAD" then
     
-        do_load(trim$(mid$(cmd, 5)))
+        do_load(trim(mid(cmd, 5)))
         
-  Elseif left$(cmd, 4) = "SAVE" then
+    elseif left(cmd, 4) = "SAVE" then
   
         do_save(trim$(mid$(cmd, 5)))
   
-  elseif cmd = "RUN" then
+    elseif cmd = "RUN" then
   
         do_run()
         
-  else
+    else
     
-       do_let("LET "+cmd)
-       buff = buff_after_parse_or ' look for extraneous stuff
-       if gettok() <> "~" then
-         Console.WriteLine("warning: extra stuff after expression")
-       end if
+        do_let("LET "+cmd)
+        buff = buff_after_parse_or ' look for extraneous stuff
+        if gettok() <> "~" then
+           Console.WriteLine("warning: extra stuff after expression")
+        end if
        
     end if
   
@@ -200,10 +184,8 @@ end function
 
 sub do_load(fname as string)
 
-   ' dim line as string
-   
    do_new()
-' console.writeline("fname :" + fname + ":")
+
    For Each line As String In File.ReadAllLines(fname)
        process_line(line)
    next
@@ -247,16 +229,12 @@ Sub do_list()
   
 End Sub
 
-' UDTs don't seem to be working, so I'm doing this instead
-' This the FOR-NEXT stack
-
-dim acvar(100) as string
-dim aistart(100) as integer
-dim ailast(100) as integer
-dim aistep(100) as integer
-dim ailine(100) as integer
-
-dim for_stackp as integer
+dim acvar(100) as string    ' For loop variable
+dim aistart(100) as integer ' start
+dim ailast(100) as integer  ' last
+dim aistep(100) as integer  ' step
+dim ailine(100) as integer  ' line number of For
+dim for_stackp as integer   ' For loop stack pointer
 
 dim gosub_stack(100) as integer
 dim gosub_stack_ptr as integer
@@ -287,19 +265,18 @@ sub do_run()
       
    next pc
   
-  if startpc = 0 then
+   if startpc = 0 then
       Console.WriteLine("No statements in buffer!")
       exit sub
-  end if
+   end if
   
-  'statement(5000) = "END"
   pc = startpc
    
   while not stoprun and pc <> 0
   
       cmd = statement(pc)
       
-      if left$(cmd, 3) = "LET" then
+      if left(cmd, 3) = "LET" then
          do_let(cmd)
          buff = buff_after_parse_or ' look for extraneous stuff
          if gettok() <> "~" then
@@ -307,41 +284,36 @@ sub do_run()
              
           end if
  
-      elseif left$(cmd, 5) = "PRINT" then
+      elseif left(cmd, 5) = "PRINT" then
           do_print(cmd)
-      elseif left$(cmd, 4) = "GOTO" then
+      elseif left(cmd, 4) = "GOTO" then
           pc = do_goto(cmd) - 1
-      elseif left$(cmd, 5) = "GOSUB" then
+      elseif left(cmd, 5) = "GOSUB" then
           pc = do_gosub(cmd) -1
-      elseif left$(cmd, 7) = "RETURN" then
+      elseif left(cmd, 7) = "RETURN" then
           pc = do_return()
       elseif cmd = "END" or cmd = "STOP" then
           stoprun = true
-      elseif left$(cmd, 2) = "IF" then
+      elseif left(cmd, 2) = "IF" then
           target = do_if(cmd)
 
           if target <> 0 then 
               pc = target - 1
-
           end if
-      elseif left$(cmd, 5) = "INPUT" then
+      elseif left(cmd, 5) = "INPUT" then
           do_input(cmd)
-      Elseif left$(cmd, 3) = "FOR" then
+      Elseif left(cmd, 3) = "FOR" then
           do_for(cmd)
-      elseif left$(cmd, 4) = "NEXT" then
+      elseif left(cmd, 4) = "NEXT" then
           do_next(cmd)
       else
          cmd = "LET " + cmd
          do_let(cmd)
-'         Console.WriteLine("Don't know " + cmd)
       end if
 
-      if left$(cmd, 4) <> "NEXT" then
+      if left(cmd, 4) <> "NEXT" then
           pc = next_pc(pc)
       end if
-
-      
-'      Console.WriteLine("Next PC is "+pc)
 
   end while
   
@@ -354,7 +326,7 @@ sub do_print(cmd as string)
     
     comma_last = false
 
-    buff = mid$(cmd, 6)
+    buff = mid(cmd, 6)
     
     tok = gettok()
 
@@ -367,8 +339,8 @@ sub do_print(cmd as string)
 
       comma_last = false
 
-      if lefT$(tok, 1) = chr$(34) then
-          tok = mid$(tok, 2, len(tok) - 2)
+      if lefT(tok, 1) = chr(34) then
+          tok = mid(tok, 2, len(tok) - 2)
           console.write(tok + " ")
           
           tok = gettok()
@@ -381,13 +353,10 @@ sub do_print(cmd as string)
       else
           console.write(Expr_eval(tok + buff) + " ")
           buff = buff_after_parse_or
-         ' console.writeline("buff after parse or in print :" + buff + ":")
-          
+ 
           tok = gettok()
-         ' console.writeline("got tok :" + tok + ":")
           
           if tok = "," then
-         ' console.writeline("compared :"+tok+": to , and got a match")
               tok = gettok()
               comma_last = true
           end if
@@ -398,14 +367,13 @@ sub do_print(cmd as string)
         Console.WriteLine("")
     end if
   
-  
 end sub
 
 function do_if(cmd as string) as integer
   Dim b as integer
   dim linenum as integer
   
-  b = val(Expr_eval(mid$(cmd, 3)))
+  b = val(Expr_eval(mid(cmd, 3)))
   buff = buff_after_parse_or ' look for extraneous stuff
   if gettok() <> "THEN" then
          Console.WriteLine("warning: THEN not found right after expression end on line " + pc)
@@ -414,8 +382,7 @@ function do_if(cmd as string) as integer
   i = instr(1, cmd, "THEN")
   
   if i <> 0 then
-      linenum = val(mid$(cmd, i + 4))
-'      Console.WriteLine("if target is " + linenum)
+      linenum = val(mid(cmd, i + 4))
   else
       Console.WriteLine("malformed command is  :" + cmd + ":   missing THEN")
       linenum = 0
@@ -433,12 +400,10 @@ end function
 
 sub do_for(cmd as string)
 
-    cmd = mid$(cmd, 4)
+    cmd = mid(cmd, 4)
     buff = cmd
     
     dim cvar as string
-    
-'    dim tok as string
     
     cvar = gettok()
     
@@ -468,7 +433,7 @@ sub do_for(cmd as string)
     
     if gettok() = "STEP" then
     
-       istep = VAL(Expr_eval(buff))
+       istep = Val(Expr_eval(buff))
        
     end if
     
@@ -480,12 +445,7 @@ sub do_for(cmd as string)
         
     end if
     
-'    Console.WriteLine("var = "+cvar)
- '   Console.WriteLine("start is " + istart)
-'    Console.WriteLine("last is " + ilast)
-'    Console.WriteLine("step = "+ istep)
-    
-    for_stackp = for_stackp + 1 
+    for_stackp = for_stackp + 1     ' Put For info on stack
     
     acvar(for_stackp) = cvar
     aistart(for_stackp) = istart
@@ -493,40 +453,28 @@ sub do_for(cmd as string)
     aistep(for_stackp) = istep
     ailine(for_stackp) = pc
     
-    Set_variable(cvar, format$(istart))
-    
-'    Console.WriteLine("FOR " + cvar + "  for_stackp = "+ for_stackp)
-    
-
+    Set_variable(cvar, format(istart))
     
 end sub
   
 sub do_next(cmd as string)
-'  Console.WriteLine(cmd)
-'  Console.WriteLine("NEXT " + " for_stackp "  + for_stackp)
 
   if for_stackp >= 1 then
 '    Console.WriteLine("NEXT "+acvar(for_stackp))
-'     Console.WriteLine(aistart(for_stackp))
-'    Console.WriteLine(ailast(for_stackp))
-'    Console.WriteLine(aistep(for_stackp))
-'    Console.WriteLine(ailine(for_stackp))
 
   else
     Console.WriteLine("stack underflow NEXT without FOR on line "+pc)
-      pc = next_pc(pc)
+    pc = next_pc(pc)
     exit sub
   end if
-    cmd = mid$(cmd, 5)
+  cmd = mid$(cmd, 5)
     
-    buff = cmd
+  buff = cmd
     
-    dim controlvariable as string
+  dim controlvariable as string
     
     controlvariable = gettok()
     
-'    Console.WriteLine("control variable for NEXT is "+ controlvariable)
-'    Console.WriteLine("control variable on stack is "+acvar(for_stackp))
     if controlvariable <> acvar(for_stackp) then
         Console.WriteLine("mismatched next on line "+pc)
     end if
@@ -548,22 +496,14 @@ sub do_next(cmd as string)
     
     var = acvar(for_stackp) 
     dim v as integer
-    v = val(Get_variable(var))
+    v = Val(Get_variable(var))
     
     v = v + istep
     
     if istep >= 0 then
         if v > last then
-   '     Console.WriteLine("popping "+ "var = "+var)
             pc = next_pc(pc) 
             for_stackp = for_stackp - 1
-            if for_stackp > 0 then
-'                Console.WriteLine("  pc is now "+pc)
-'                Console.WriteLine("  for_stackp is "+for_stackp)
-'                Console.WriteLine("   control variable will now be "+ acvar(for_stackp))
-            else
-'                Console.WriteLine("End of loops")
-            end if
         else
             pc = next_pc(iline)
         end if
@@ -577,11 +517,10 @@ sub do_next(cmd as string)
     
     Set_variable(var, format$(v))
 
-  
 end sub
 
 function next_pc(pc as integer) as integer
-'  Console.WriteLine("look for next statment after "+pc)
+
   for i = pc + 1 to 5000
   
     if statement(i) <> "" then
@@ -596,11 +535,11 @@ function next_pc(pc as integer) as integer
 end Function
 
 function do_goto(cmd as string) as integer
-  do_goto = val(mid$(cmd, 5))
+  do_goto = val(mid(cmd, 5))
 end function
 
 function do_gosub(cmd as string) as integer
-   do_gosub = val(mid$(cmd, 6))
+   do_gosub = val(mid(cmd, 6))
    gosub_stack_ptr = gosub_stack_ptr + 1
    gosub_stack(gosub_stack_ptr)= pc
 end function
@@ -612,19 +551,18 @@ end function
 
 sub do_let(cmd as string)
 
-   dim var as string
-   dim firstchar as string
-'  Console.WriteLine("cmd = "+cmd)
+     dim var as string
+     dim firstchar as string
 
-      buff = mid$(cmd, 4)
+      buff = mid(cmd, 4)
       var = gettok()
-'       Console.WriteLine("buff = '" + buff+ "'  " + "var ="+var)
+
       if var = "@" then
           do_let_at_array(buff)
           exit sub
       end if
       
-      firstchar = left$(var, 1)
+      firstchar = left(var, 1)
       if not (firstchar >= "A" and firstchar <= "Z") then
       
           Console.WriteLine("Variable name must follow LET")
@@ -643,40 +581,10 @@ end sub
 
 sub do_let_at_array(e as string)
 
-' There be lots of demons here that usually happen in C, but not Basic.
-' I am going to disallow the use of the logical = symbol on the left side of
-' a LET command.  This will disallow statements like LET @((1=2)+10) = 3.  The first
-' equal sign is for logical equivalence where the second is for assignment.
- 
-'  dim i as integer
-'  dim leftstr as string
-'  dim rightstr as string
-  
   dim leftval as integer
   dim rightval as integer
   
   dim rpn as string
-  
-'  Console.WriteLine("e is  "+e)
-'  i = instr(1, e, "=")
-'  Console.WriteLine("i is  "+i)
-'  if i = 0 then
- '     Console.WriteLine("No assignment operator in let for @ array")
-'      exit sub
-'  end if
-  
-'  leftstr = mid$(e, 1, i-1)
-'  rightstr = mid$(e, i+1)
-  
-'  Console.WriteLine("left str is "+leftstr)
-'  Console.WriteLine("right str is "+rightstr)
-
-'   leftval = val(Expr_eval(leftstr))
-   
-'   Console.WriteLine("leftstr is "+leftstr+"leftval is "+leftval)
-'   rightval = val(Expr_eval(rightstr))
-   
-'   Console.WriteLine("left is "+leftval+" and right is "+rightval)
 
   buff = e
   if gettok() <> "(" then
@@ -693,7 +601,7 @@ sub do_let_at_array(e as string)
   
   buff_after_parse_or = buff
 
-  leftval = val(Eval_rpn(rpn))
+  leftval = Val(Eval_rpn(rpn))
   
   buff = buff_after_parse_or
   
@@ -704,32 +612,29 @@ sub do_let_at_array(e as string)
   
   rightval = Val(Eval_rpn(parse_or()))
   
-'  Console.WriteLine("leftval = "+leftval)
-  
   if not (leftval >= 1 and leftval <= 5000) then
       Console.WriteLine("subscript out of bounds on left side of assignment is "+leftval)
       exit sub
   end if
 
-  at_array(leftval) = Format$(rightval)
+  at_array(leftval) = Format(rightval)
   
 end sub
 
 sub do_input(cmd as string)
 
-   dim var as string
-   dim firstchar as string
-'  Console.WriteLine("cmd = "+cmd)
+     dim var as string
+     dim firstchar as string
 
       buff = mid$(cmd, 6)
       var = gettok()
-'      Console.WriteLine("buff = '" + buff+ "'  " + "var ="+var)
+
       if var = "@" then
           do_input_at_array(buff)
           exit sub
       end if
       
-      firstchar = left$(var, 1)
+      firstchar = left(var, 1)
       if not (firstchar >= "A" and firstchar <= "Z") then
           Console.WriteLine("Variable name must follow INPUT")
           exit sub
@@ -739,21 +644,13 @@ sub do_input(cmd as string)
       
       user_input = Console.Readline()
   
-'      user_input = Trim$(Remove$(var, "\r\n"))
-        user_input = user_input.Replace("\n","").Replace("\r","")
-        user_input = trim(user_input)
+      user_input = user_input.Replace("\n","").Replace("\r","")
+      user_input = trim(user_input)
       Set_variable(var, Expr_eval(user_input))
 
 end sub
 
 sub do_input_at_array(e as string)
-
-' There be lots of demons here that usually happen in C, but not Basic.
-' I am going to disallow the use of the logical = symbol on the left side of
-' a LET command.  This will disallow statements like LET @((1=2)+10) = 3.  The first
-' equal sign is for logical equivalence where the second is for assignment.
- 
-'  dim i as integer
 
   dim user_input as string
   
@@ -786,7 +683,7 @@ sub do_input_at_array(e as string)
       exit sub
   end if
 
-  at_array(subval) = Format$(inpval)
+  at_array(subval) = Format(inpval)
   
 end sub
 
@@ -803,28 +700,25 @@ Function Eval_rpn(rpn as string) as string
     exit function
   end if
   
-  do while tok<> "~"
-'     Console.WriteLine("Doing tok "+tok)
+  while tok<> "~"
       process_tok(tok)
     tok = gettok()
-  loop
+  end while
   
   dim r as string
   r = mypop()
-'  Console.WriteLine("result is "+r)
+
   Eval_rpn = r
   
-  End Function
+End Function
   
-  
-
 function Expr_eval(e as string) as string
 
   clearstack()
 
   buff = e
   buff = parse_or()
- 'Console.WriteLine("RPN = " + buff + " after parse_or")
+
   dim tok as string
 
   tok = gettok()
@@ -834,15 +728,14 @@ function Expr_eval(e as string) as string
     exit function
   end if
   
-  do while tok<> "~"
-'     Console.WriteLine("Doing tok "+tok)
-      process_tok(tok)
+  While tok<> "~"
+    process_tok(tok)
     tok = gettok()
-  loop
+  end while
   dim r as integer
   r = mypop()
-'  Console.WriteLine("result is "+r)
-  Expr_eval = format$(r)
+
+  Expr_eval = format(r)
 
 End function
 
@@ -851,12 +744,12 @@ sub process_tok(tok as string)
     dim i as integer
 
     if tok = "UNM" then
-        mypush(Format$(-val(mypop())))
+        mypush(Format(-val(mypop())))
         exit sub
     end if
     
     if tok = "GETAT" then
-'        mypush(Format$(val(at_array(mypop()))))
+
         i = mypop()
         if i < 1 or i > 5000 then
             Console.WriteLine("Subscript out of range 1..5000 for " + i)
@@ -864,7 +757,7 @@ sub process_tok(tok as string)
             Exit Sub
         end if
         
-        mypush(format$(at_array(i)))
+        mypush(format(at_array(i)))
         
         exit sub
     end if
@@ -875,13 +768,11 @@ sub process_tok(tok as string)
           exit sub
         end if
     next i
-    
-
-    
+ 
     for i = 1 to 8
-    ' console.writeline("testing :"+tok+": against :"+logical_op(i)+":")
+
         if logical_op(i) = tok then
-        '  Console.WriteLine("logical op " + logical_op(i))
+
           process_op(logical_op(i))
           exit sub
         end if
@@ -935,7 +826,7 @@ sub process_op(op as string)
 end sub
 
 sub process_num_or_var(num as string)
-    if left$(num, 1) >= "0" and left$(num,1) <= "9" then
+    if left(num, 1) >= "0" and left(num,1) <= "9" then
 
       mypush(num)
     else
@@ -992,6 +883,10 @@ End sub
 
 Function Get_variable(key as string) as string  
  '   Get_variable = Tree_Get(pTree, key)
+    if len(key) <> 1 then
+        console.writeline("variable name " + key + " is too long")
+        exit function
+    end if
     dim nkey as integer
 
     nkey = asc(key) - asc("A") + 1
@@ -1013,8 +908,8 @@ function gettok() as string
     dim b1 as string
     dim i as integer
     
-    while left$(buff, 1) = " "
-        buff = mid$(buff, 2)
+    while left(buff, 1) = " "
+        buff = mid(buff, 2)
     end while
     
     if buff = "" then
@@ -1025,8 +920,8 @@ function gettok() as string
     
     collect = ""
 
-    b = left$(buff,1)
-    b1 = mid$(buff, 2, 1)
+    b = left(buff,1)
+    b1 = mid(buff, 2, 1)
     
     if b = "<" and b1 = "=" then
         buff = mid$(buff, 3)
@@ -1079,8 +974,8 @@ function gettok() as string
     if b >="A" and b <= "Z" then
         while b >= "A" and b <= "Z" or b >= "0" and b <= "9"
             collect = collect + b
-            buff = mid$(buff, 2)
-            b = left$(buff, 1)
+            buff = mid(buff, 2)
+            b = left(buff, 1)
         end while
         ' console.writeline(collect)
         gettok = collect
@@ -1101,16 +996,16 @@ function gettok() as string
     
     if asc(b) = 34 then ' quote mark
         collect = b
-        buff = mid$(buff, 2)
-        b = left$(buff, 1)
+        buff = mid(buff, 2)
+        b = left(buff, 1)
         while Asc(b) <> 34
             collect = collect + b
-            buff = mid$(buff, 2)
-            b = left$(buff, 1)
+            buff = mid(buff, 2)
+            b = left(buff, 1)
         end while
         ' console.writeline(collect + chr$(34))
         gettok = collect + chr$(34)
-        buff = mid$(buff, 2)
+        buff = mid(buff, 2)
         
 '        Console.WriteLine("text token is " + collect + chr$(0x22))
         
