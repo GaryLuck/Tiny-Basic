@@ -193,17 +193,6 @@ sub do_load(fname as string)
 end sub
 
 sub do_save(fname as string)
-    dim i as integer
-
-    Using sw As StreamWriter = New StreamWriter(fname)
-
-    For i = 1 to 5000
-        if statement(i) <> "" then
-            sw.WriteLine(Format(i) + " " + statement(i))
-        end if
-    next i
-         
-    End Using
 
 '    dim i as integer
  '   Dim file As System.IO.StreamWriter
