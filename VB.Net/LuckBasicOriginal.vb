@@ -1,4 +1,4 @@
-'---script created on 11-08-2022 14:51:59 by 
+﻿'---script created on 11-08-2022 14:51:59 by 
 ' LuckBasic
 ' This is my personal project to build a Basic interpreter.
 ' It's a high level project to prove to myself that i understand how to build an interpreter.
@@ -194,17 +194,17 @@ end sub
 
 sub do_save(fname as string)
 
-'    dim i as integer
- '   Dim file As System.IO.StreamWriter
-'    file = FileSystem.OpenTextFileWriter(fname, True)
+    dim i as integer
+    Dim file As System.IO.StreamWriter
+    file = My.Computer.FileSystem.OpenTextFileWriter(fname, True)
     
-  '  for i = 1 to 5000
-  '      if statement(i) <> "" then
-   '         file.WriteLine(Format(i) + " " + statement(i))
-  ''      end if
- '   next
+    for i = 1 to 5000
+        if statement(i) <> "" then
+            file.WriteLine(Format(i) + " " + statement(i))
+        end if
+    next
 
-'   file.close()
+   file.close()
    
 end sub
     
