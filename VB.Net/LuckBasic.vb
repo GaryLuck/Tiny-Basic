@@ -136,7 +136,7 @@ sub process_line(i as string)
     
 end sub
 
-function do_command(cmd as string) as integer
+sub do_command(cmd as string)
 
     if cmd = "LIST" then
    
@@ -180,7 +180,7 @@ function do_command(cmd as string) as integer
        
     end if
   
-end function
+end sub
 
 sub do_load(fname as string)
 
@@ -246,6 +246,7 @@ sub do_run()
    dim stoprun as integer
    dim cmd as string
    dim target as integer
+   dim l as integer
    
    startpc = 0
    for_stackp = 0
@@ -256,14 +257,14 @@ sub do_run()
    
 
    
-   for pc = 1 to 5000
+   for l = 1 to 5000
    
-      if statement(pc) <> "" then
-          startpc = pc
+      if statement(l) <> "" then
+          startpc = l
           exit for
       end if
       
-   next pc
+   next l
   
    if startpc = 0 then
       Console.WriteLine("No statements in buffer!")
@@ -520,7 +521,8 @@ sub do_next(cmd as string)
 end sub
 
 function next_pc(pc as integer) as integer
-
+  dim i as integer
+  
   for i = pc + 1 to 5000
   
     if statement(i) <> "" then
