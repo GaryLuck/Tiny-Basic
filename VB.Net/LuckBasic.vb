@@ -164,7 +164,7 @@ function do_command(cmd as string) as integer
         
     elseif left(cmd, 4) = "SAVE" then
   
-        do_save(trim$(mid$(cmd, 5)))
+        do_save(trim(mid(cmd, 5)))
   
     elseif cmd = "RUN" then
   
@@ -200,7 +200,7 @@ sub do_save(fname as string)
     
     for i = 1 to 5000
         if statement(i) <> "" then
-            file.WriteLine(Format$(i) + " " + statement(i))
+            file.WriteLine(Format(i) + " " + statement(i))
         end if
     next
 
@@ -222,7 +222,7 @@ Sub do_list()
   for i = 1 to 5000
   
       if statement(i) <> "" then
-        Console.WriteLine(format$(i) + " " +statement(i))
+        Console.WriteLine(format(i) + " " +statement(i))
       end if
       
   next i
@@ -467,7 +467,7 @@ sub do_next(cmd as string)
     pc = next_pc(pc)
     exit sub
   end if
-  cmd = mid$(cmd, 5)
+  cmd = mid(cmd, 5)
     
   buff = cmd
     
@@ -515,7 +515,7 @@ sub do_next(cmd as string)
         end if
     end if
     
-    Set_variable(var, format$(v))
+    Set_variable(var, format(v))
 
 end sub
 
@@ -626,7 +626,7 @@ sub do_input(cmd as string)
      dim var as string
      dim firstchar as string
 
-      buff = mid$(cmd, 6)
+      buff = mid(cmd, 6)
       var = gettok()
 
       if var = "@" then
@@ -753,7 +753,7 @@ sub process_tok(tok as string)
         i = mypop()
         if i < 1 or i > 5000 then
             Console.WriteLine("Subscript out of range 1..5000 for " + i)
-            mypush(format$(0))
+            mypush(format(0))
             Exit Sub
         end if
         
@@ -821,7 +821,7 @@ sub process_op(op as string)
        exit sub
     End if
     
-    mypush(format$(res))
+    mypush(format(res))
     
 end sub
 
@@ -925,35 +925,35 @@ function gettok() as string
     b1 = mid(buff, 2, 1)
     
     if b = "<" and b1 = "=" then
-        buff = mid$(buff, 3)
+        buff = mid(buff, 3)
         ' console.writeline(b + b1)
         gettok = b + b1
         exit function
     end if
     
     if b = "<" and b1 = ">" then
-        buff = mid$(buff, 3)
+        buff = mid(buff, 3)
         ' console.writeline(b + b1)
         gettok = b + b1
         exit function
     end if
     
     if b = "<" then
-        buff = mid$(buff, 2)
+        buff = mid(buff, 2)
         ' console.writeline(b)
         gettok = b
         exit function
     end if
     
     if b = ">" and b1 = "=" then
-        buff = mid$(buff, 3)
+        buff = mid(buff, 3)
         ' console.writeline(b + b1)
         gettok = b + b1
         exit function
     end if
     
     if b = ">" then
-        buff = mid$(buff, 2)
+        buff = mid(buff, 2)
         ' console.writeline(b)
         gettok = b
         exit function
@@ -965,7 +965,7 @@ function gettok() as string
         ' console.writeline("found " + b)
            ' console.writeline(b)
             gettok = b
-            buff = mid$(buff, 2)
+            buff = mid(buff, 2)
             exit function
         end if
     next i
@@ -986,8 +986,8 @@ function gettok() as string
     if b >= "0" and b <= "9" then
         while b >= "0" and b <= "9"
             collect = collect + b
-            buff = mid$(buff, 2)
-            b = left$(buff, 1)
+            buff = mid(buff, 2)
+            b = left(buff, 1)
         end while
         ' console.writeline(collect)
         gettok = collect
@@ -1188,7 +1188,7 @@ function parse_condition () as string
     rpn = parse_expr()
     tok = gettok()
     
-    if left$(tok, 1) = "=" or left$(tok, 1) = ">" or left$(tok, 1) = "<" then
+    if left(tok, 1) = "=" or left(tok, 1) = ">" or left(tok, 1) = "<" then
         rpn = rpn + parse_expr() + tok
         tok = gettok()
     end if
