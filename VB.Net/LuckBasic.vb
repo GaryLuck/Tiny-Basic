@@ -15,7 +15,7 @@ module luckbasic
 dim buff as string = ""
 dim buff_after_parse_or as string
 dim pc as integer ' Program counter for interpreter
-const ops = 10
+const ops as integer = 10
 dim op() as string 
 ' dim pTree as long
 dim statement(5000) as string
@@ -64,13 +64,13 @@ Sub Main()
 
   for k = 1 to 5000
         at_array(k) = 2*k  ' test pattern
-  next i
+  next k
 
   for k = 1 to 5000
         statement(k) = ""
   next k
 
-  op = new string(ops + 1) { "dummy for 0" , "+", "-", "*", "/", "(", ")", "=", "^", "@", "," }
+  op = new string(ops) { "dummy for 0" , "+", "-", "*", "/", "(", ")", "=", "^", "@", "," }
 
   dim i as string
 
@@ -740,7 +740,7 @@ function Expr_eval(e as string) as string
 End function
 
 sub process_tok(tok as string)
-    dim logical_op() as string = new string(9) { "dummy", "<", "<=", "=", ">", ">=", "<>", "AND", "OR" }
+    dim logical_op() as string = new string(8) { "dummy", "<", "<=", "=", ">", ">=", "<>", "AND", "OR" }
     dim i as integer
 
     if tok = "UNM" then
@@ -885,6 +885,7 @@ Function Get_variable(key as string) as string
  '   Get_variable = Tree_Get(pTree, key)
     if len(key) <> 1 then
         console.writeline("variable name " + key + " is too long")
+        Get_variable = "dummy"
         exit function
     end if
     dim nkey as integer
@@ -1004,7 +1005,7 @@ function gettok() as string
             b = left(buff, 1)
         end while
         ' console.writeline(collect + chr$(34))
-        gettok = collect + chr$(34)
+        gettok = collect + chr(34)
         buff = mid(buff, 2)
         
 '        Console.WriteLine("text token is " + collect + chr$(0x22))
