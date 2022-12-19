@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "w1R0/bK97mITN89E0iSvQSU7xYxhNpCxVLf+DClZCj+2Q/e0r6/twv2L891CADgikTaVMT3uWuAszvODs4dOkQ==",
+  "dgSpecHash": "/cX4i5XKE/9TvpG6kOvF0gAN1pyN/Tpa+T7A7eAjWQ4+xRy4rrWeKQrVNyRpAWaOq1HL+b2BkQ1u5V9Iz4aVNA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\garyl\\Documents\\GitHub\\LuckBasic\\Tiny-Basic\\c#\\edtb\\edtb.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\garyl\\Documents\\GitHub\\LuckBasic\\Tiny-Basic\\C#\\edtb\\edtb.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\garyl\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.12\\microsoft.netcore.app.ref.6.0.12.nupkg.sha512",
+    "C:\\Users\\garyl\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.12\\microsoft.windowsdesktop.app.ref.6.0.12.nupkg.sha512",
+    "C:\\Users\\garyl\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.12\\microsoft.aspnetcore.app.ref.6.0.12.nupkg.sha512",
+    "C:\\Users\\garyl\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.12\\microsoft.netcore.app.host.win-x64.6.0.12.nupkg.sha512"
+  ],
   "logs": []
 }
