@@ -179,7 +179,7 @@ static void forstmt() { // for i = expr to expr
     forlimit[forndx] = n;
     // need to store iter, limit, line, and col
     forline[forndx] = curline;
-    forpos[forndx] = textp; else forpos[forndx] = textp - 2;
+    if (tok == "") forpos[forndx] = textp; else forpos[forndx] = textp - 2;
     //forpos[forndx] textp; if (tok != "") forpos[forndx] -=2;
   }
 }
